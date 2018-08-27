@@ -9,7 +9,8 @@ var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
-let login = require('./routes/login');
+let usersDB = require('./routes/userDB');
+
 
 var app = express();
 
@@ -27,7 +28,34 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/users', users);
-app.use('/login', login);
+
+app.get('/exemplary-anbieter-service', function (req, res) {
+	let html = ''
+	html += "<body>"
+	html += "<form action='/exemplary-anbieter-service/submit'  method='post' name='form1'>"
+	html += "<p>Username:</p><input type= 'text' name='username'>"
+	html += "<p>Password:</p><input type='text' name='password'>"
+	html += "<p><input type='submit' value='submit'></p>"
+	html += "</form>"
+	html += "</body>"
+	res.send(html)
+})
+
+app.post('/exemplary-anbieter-service/submit', function (req, res) {
+
+	let dbResult = usersDB.find((user) => {
+		return (user.username === req.body.username && user.password === req.body.password);
+	})
+
+	let reply = ''
+	if (dbResult !== undefined) {
+		reply += "<p>Welcome back " + req.body.username + "!</p>"
+		// reply += "<p>Your E-mail is " + req.body.password + "</p>"
+	} else {
+		reply += "Wrong username/password"
+	}
+	res.send(reply)
+})
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
