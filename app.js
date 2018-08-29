@@ -6,6 +6,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var fs = require('fs');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -56,6 +57,29 @@ app.post('/exemplary-anbieter-service/submit', function (req, res) {
 	}
 	res.send(reply)
 })
+
+const saml = require('samlify');
+// configure a service provider
+const sp = saml.ServiceProvider({
+	metadata: fs.readFileSync('./metadata_sp.xml')
+});
+// // configure the corresponding identity provider
+// const idp = saml.IdentityProvider({
+// 	metadata: fs.readFileSync('./metadata_idp.xml')
+// });
+// parse when receive a SAML Response from IdP
+app.use('/exemplary-anbieter-service/sso', (req, res) => {
+	sp.parseLoginResponse(idp, 'post', req)
+		.then(parseResult => {
+			// Write your own validation and render function here
+		})
+		.catch(console.error);
+});
+
+// TODO
+app.use('/exemplary-anbieter-service/logout', (req, res) => {
+
+});
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

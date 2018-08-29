@@ -15,8 +15,10 @@
 		"cookie-parser": "^1.4.0",
 		"debug": "^2.2.0",
 		"express": "^4.14.0",
+		"fs": "0.0.1-security",
 		"morgan": "^1.7.0",
 		"pug": "^2.0.0-beta6",
+		"samlify": "^2.4.0-rc2",
 		"serve-favicon": "^2.3.0"
 	},
 	"engines": {
