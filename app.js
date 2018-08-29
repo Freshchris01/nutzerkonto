@@ -64,9 +64,9 @@ const sp = saml.ServiceProvider({
 	metadata: fs.readFileSync('./metadata_sp.xml')
 });
 // // configure the corresponding identity provider
-// const idp = saml.IdentityProvider({
-// 	metadata: fs.readFileSync('./metadata_idp.xml')
-// });
+const idp = saml.IdentityProvider({
+	metadata: fs.readFileSync('./metadata_idp.xml')
+});
 // parse when receive a SAML Response from IdP
 app.use('/exemplary-anbieter-service/sso', (req, res) => {
 	sp.parseLoginResponse(idp, 'post', req)
