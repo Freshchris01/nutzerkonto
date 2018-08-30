@@ -49,7 +49,7 @@ app.post('/exemplary-anbieter-service/submit', function (req, res) {
 
 	let reply = ''
 	if (dbResult !== undefined) {
-		reply += "<p>Welcome back " + req.body.username + "!</p>"
+		reply += "<p>Welcome back " + req.body.username + "! Nice to see you!</p>"
 		// reply += "<p>Your E-mail is " + req.body.password + "</p>"
 	} else {
 		reply += "Wrong username/password"
