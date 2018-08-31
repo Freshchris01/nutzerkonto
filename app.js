@@ -21,15 +21,14 @@ app.get('/', (req, res) => {
 });
 
 app.get('/service-provider-1', (req, res) => {
-	let html = ''
-	html += "<body>"
-	html += "<form action='/service-provider-1/auth' method='post'>"
-	html += "<p>Username:</p><input type='text' name='username'>"
-	html += "<p>Password:</p><input type='text' name='password'>"
-	html += "<p><input type='submit' value='submit'></p>"
-	html += "</form>"
-	html += "</body>"
-	res.send(html)
+	let html = `
+	<form action="/service-provider-1/auth" method="post">
+		<input type="text" name="username" placeholder="Benutzername">
+		<input type="text" name="password" placeholder="Passwort">
+		<input type="submit" value="submit">
+	</form>`;
+
+	res.send(html);
 });
 
 app.post('/service-provider-1/auth', (req, res) => {
@@ -37,14 +36,15 @@ app.post('/service-provider-1/auth', (req, res) => {
 		return (user.username === req.body.username && user.password === req.body.password);
 	})
 
-	// let reply = ''
 	if (dbResult !== undefined) {
-		let html = '<p>Hi ' + req.body.username + '! Please enter your 2FA Code:</p>';
-		html += "<form action='/service-provider-1/welcome' method='post'>"
-		html += '<p><input type="text" name="code"></p>'
-		html += `<input style='display:none;' type='text' name='username' value='${req.body.username}'>`
-		html += "<p><input type='submit' value='submit'></p>"
-		html += "</form>"
+		let html = `
+		<p>Hi ${req.body.username}! Please enter your 2FA Code:</p>
+		<form action="/service-provider-1/welcome" method="post">
+			<input type="text" name="code" placeholder="Code">
+			<input style="display:none;" type="text" name="username" value="${req.body.username}">
+			<input type="submit" value="submit">
+		</form>`;
+
 		res.send(html);
 	} else {
 		res.send('Wrong username/password');
@@ -65,12 +65,12 @@ app.post('/service-provider-1/welcome', (req, res) => {
 		if (response.data.result.value) {
 			res.send('Login successful!');
 		} else {
-			res.send('2FA went wrong!');
+			res.send('Wrong 2FA code!');
 		}
 	})
 	.catch(error => {
 		console.log(error);
-		res.send('2FA went wrong!');
+		res.send('2FA service may be down!');
 	});
 });
 
