@@ -11,6 +11,7 @@
 		"name": "tech4germany"
 	},
 	"dependencies": {
+		"axios": "^0.18.0",
 		"body-parser": "^1.15.0",
 		"cookie-parser": "^1.4.0",
 		"debug": "^2.2.0",

@@ -3,21 +3,14 @@ const debug = require('debug');
 const express = require('express');
 const path = require('path');
 const favicon = require('serve-favicon');
-const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+const axios = require('axios');
 
 const usersDB = require('./userDB');
 
-
 const app = express();
 
-// view engine setup
-// app.set('views', path.join(__dirname, 'views'));
-
-// uncomment after placing your favicon in /public
-//app.use(favicon(__dirname + '/public/favicon.ico'));
-app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -31,7 +24,7 @@ app.get('/service-provider-1', (req, res) => {
 	let html = ''
 	html += "<body>"
 	html += "<form action='/service-provider-1/auth' method='post'>"
-	html += "<p>Username:</p><input type= 'text' name='username'>"
+	html += "<p>Username:</p><input type='text' name='username'>"
 	html += "<p>Password:</p><input type='text' name='password'>"
 	html += "<p><input type='submit' value='submit'></p>"
 	html += "</form>"
@@ -49,6 +42,7 @@ app.post('/service-provider-1/auth', (req, res) => {
 		let html = '<p>Hi ' + req.body.username + '! Please enter your 2FA Code:</p>';
 		html += "<form action='/service-provider-1/welcome' method='post'>"
 		html += '<p><input type="text" name="code"></p>'
+		html += `<input style='display:none;' type='text' name='username' value='${req.body.username}'>`
 		html += "<p><input type='submit' value='submit'></p>"
 		html += "</form>"
 		res.send(html);
@@ -58,10 +52,26 @@ app.post('/service-provider-1/auth', (req, res) => {
 });
 
 app.post('/service-provider-1/welcome', (req, res) => {
-	// TODO API check
-	// if API check valid:
-	res.send('Login successful!')
-	// TODO else: 
+	process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
+	axios.get('https://13.80.108.55/validate/check', {
+		params: {
+			user: req.body.username,
+			pass: req.body.code
+		}
+	})
+	.then(response => {
+		console.log(response);
+		if (response.data.result.value) {
+			res.send('Login successful!');
+		} else {
+			res.send('2FA went wrong!');
+		}
+	})
+	.catch(error => {
+		console.log(error);
+		res.send('2FA went wrong!');
+	});
 });
 
 // catch 404 and forward to error handler
@@ -92,5 +102,5 @@ app.use((err, req, res, next) => {
 app.set('port', process.env.PORT || 3000);
 
 const server = app.listen(app.get('port'), () => {
-	debug('Express server listening on port ' + server.address().port);
+	console.log('Express server listening on port ' + server.address().port);
 });
