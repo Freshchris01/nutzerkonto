@@ -6,8 +6,6 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const axios = require('axios');
 
-const usersDB = require('./userDB');
-
 const app = express();
 
 app.use(bodyParser.json());
@@ -16,14 +14,16 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res) => {
-	res.send(`
+	let html = `
 	<h1>Nutzerkonto Bund</h1>
 	<h2>Stammdaten</h2>
 	<p>TODO</p>
 	<h2>Services</h2>
 	<ul>
 		<li><a href="/service-provider-1">service-provider-1</a></li>
-	</ul>`);
+	</ul>`
+
+	res.send(html);
 });
 
 app.get('/service-provider-1', (req, res) => {
@@ -62,7 +62,7 @@ app.post('/service-provider-1/auth', (req, res) => {
 		if (error.status != 200) {
 			res.send('Wrong username/password');
 		} else {
-			res.send('2FA service may be down!');
+			res.send('2FA service may be down');
 		}
 	});
 });
