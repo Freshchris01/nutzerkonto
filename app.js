@@ -31,36 +31,43 @@ app.get('/', (req, res) => {
 	res.send(html);
 });
 
-app.get('/login', (req, res) => {
+app.get('/service-provider-1', (req, res) => {
 	let html = `
-		<form action="/login" method="post">
-			<input type="text" name="username" placeholder="Benutzername">
-			<input type="text" name="password" placeholder="Passwort">
-			<input type="submit" value="submit">
-		</form>`;
+		<a href="/login/service-provider-1">Login with Nutzerkonto</a>`;
 	res.send(html);
 });
 
-app.post('/login', (req, res) => {
+app.get('/login/:serviceURL', (req, res) => {
+	let html = `
+	<p>Du loggst dich mit deinem Nutzerkonto für den Service <b>${req.params.serviceURL}</b> ein:</p>
+	<form action="/login/${req.params.serviceURL}" method="post">
+		<input type="text" name="username" placeholder="Benutzername">
+		<input type="text" name="password" placeholder="Passwort">
+		<input type="submit" value="submit">
+	</form>`;
+	res.send(html);
+});
+
+app.post('/login/:serviceURL', (req, res) => {
 	validateLogin(req.body.username, req.body.password).then(result => {
-		res.redirect(result ? `/login-2fa?username=${req.body.username}` : `/login`);
+		res.redirect(result ? `/login-2fa/${req.params.serviceURL}?username=${req.body.username}` : `/login`);
 	})
 });
 
-app.get('/login-2fa', (req, res) => {
+app.get('/login-2fa/:serviceURL', (req, res) => {
 	let html = `
-		<p>Hi ${req.query.username}! Please enter your 2FA Code:</p>
-		<form action="/login-2fa" method="post">
-			<input type="text" name="code" placeholder="Code">
-			<input style="display:none;" type="text" name="username" value="${req.query.username}">
-			<input type="submit" value="submit">
-		</form>`;
+	<p>Hi ${req.query.username}! Please enter your 2FA Code:</p>
+	<form action="/login-2fa/${req.params.serviceURL}" method="post">
+		<input type="text" name="code" placeholder="Code">
+		<input style="display:none;" type="text" name="username" value="${req.query.username}">
+		<input type="submit" value="submit">
+	</form>`;
 	res.send(html);
 });
 
-app.post('/login-2fa', (req, res) => {
+app.post('/login-2fa/:serviceURL', (req, res) => {
 	validate2FA(req.body.username, req.body.code).then(result => {
-		res.redirect(result ? '/' : `/login-2fa?username=${req.body.username}`);
+		res.redirect(result ? `/${req.params.serviceURL}` : `/login-2fa/${req.params.serviceURL}?username=${req.body.username}`);
 	});
 });
 
