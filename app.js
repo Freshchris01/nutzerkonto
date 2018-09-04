@@ -1,10 +1,12 @@
 ﻿'use strict';
 const express = require('express');
 const path = require('path');
-const favicon = require('serve-favicon');
+// const favicon = require('serve-favicon');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const axios = require('axios');
+
+const config = require('./config');
 
 const app = express();
 
@@ -40,7 +42,7 @@ app.get('/service-provider-1', (req, res) => {
 app.post('/service-provider-1/auth', (req, res) => {
 	process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
-	axios.get('https://nutzerkonto-db.herokuapp.com/login', {
+	axios.get(`${config.DATABASE}/login`, {
 		params: {
 			username: req.body.username,
 			password: req.body.password
@@ -70,7 +72,7 @@ app.post('/service-provider-1/auth', (req, res) => {
 app.post('/service-provider-1/welcome', (req, res) => {
 	process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
-	axios.get('https://13.80.108.55/validate/check', {
+	axios.get(`${config.LINOTP}/validate/check`, {
 		params: {
 			user: req.body.username,
 			pass: req.body.code
