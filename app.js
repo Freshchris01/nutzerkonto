@@ -1,4 +1,5 @@
 ﻿'use strict';
+
 const express = require('express');
 const path = require('path');
 // const favicon = require('serve-favicon');
@@ -50,8 +51,8 @@ app.get('/login/:serviceURL', (req, res) => {
 
 app.post('/login/:serviceURL', (req, res) => {
 	validateLogin(req.body.username, req.body.password).then(result => {
-		res.redirect(result ? `/login-2fa/${req.params.serviceURL}?username=${req.body.username}` : `/login`);
-	})
+		res.redirect(result ? `/login-2fa/${req.params.serviceURL}?username=${req.body.username}` : `/login/${req.params.serviceURL}`);
+	});
 });
 
 app.get('/login-2fa/:serviceURL', (req, res) => {
