@@ -1,0 +1,8 @@
+{
+  "realm": "nutzerkonto",
+  "auth-server-url": "https://13.80.41.117:8443/auth",
+  "ssl-required": "external",
+  "resource": "nutzerkonto",
+  "public-client": true,
+  "confidential-port": 0
+}
