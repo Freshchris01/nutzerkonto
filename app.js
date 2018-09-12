@@ -6,17 +6,21 @@ const session = require('express-session');
 const expressHbs = require('express-handlebars');
 const path = require('path');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const axios = require('axios');
+
+require('dotenv').config();
 
 const config = require('./config');
 
 const app = express();
 
+app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 // Handlebars view engine
 
@@ -57,7 +61,7 @@ app.use(session({
 
 const keycloak = new Keycloak({ store: memoryStore }, {
 	"realm": "nutzerkonto2",
-	"auth-server-url": "https://13.80.41.117:8443/auth",
+	"auth-server-url": config.KEYCLOAK,
 	"ssl-required": "external",
 	"resource": serviceProviders[0].keyCloakClientID,
 	"public-client": true,
@@ -86,12 +90,14 @@ app.get(`/${serviceProviders[0].path}`, (req, res) => {
 	const flag = req.query.flag;
 
 	if (flag) {
-		axios.get('http://localhost:3000/nutzerkonto-datenuebertragen', {
+		axios.get(`${process.env.HOST}/nutzerkonto-datenuebertragen`, {
+			headers: {
+				Cookie: buildCookieString(req.cookies)
+			},
 			params: {
 				dataAttributes: serviceProviders[0].dataAttributes.join(',')
 			}
 		}).then(response => {
-			console.log(response.data);
 			res.render('serviceProvider', {
 				redirect: '',
 				name: response.data.name
@@ -106,6 +112,14 @@ app.get(`/${serviceProviders[0].path}`, (req, res) => {
 		});
 	}
 });
+
+function buildCookieString(cookies) {
+	let cookieString = '';
+	for (let cookieKey in cookies) {
+		cookieString += `${cookieKey}=${cookies[cookieKey]};`;
+	}
+	return cookieString;
+}
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
