@@ -1,4 +1,4 @@
-<h2>{{ title }}</h2>
+<h2 class="mb-5">{{ title }}</h2>
 
 <div class="modal fade" id="datatransfer-modal" tabindex="-1" role="dialog">
 	<div class="modal-dialog" role="document">
@@ -36,55 +36,57 @@
 </script>
 {{#with data}}
 	<form action="/TODO" method="POST">
-		{{!-- <label class="col" class="col" for="anrede">Anrede</label class="col">
-	<select class="form-control col" id="anrede">
-		<option>Herr</option>
-		<option>Frau</option>
-		<option>Dritte Option</option>
-	</select> --}}
-		<div class="form-group row">
-			<label class="col" class="col" for="anrede">Anrede</label class="col">
-			<input type="text" class="form-control col" id="anrede" placeholder="Anrede eingeben" value="{{ anrede }}" required>
+		<div class="input-group form-group">
+			<div class="input-group-prepend">
+				<label class="input-group-text" for="anrede">Anrede</label></div>
+			<input type="text" class="form-control" id="anrede" value="{{ anrede }}" required>
 		</div>
-		<div class="form-group row">
-			<label class="col" class="col" for="titel">Titel</label class="col">
-			<input type="text" class="form-control col" id="titel" placeholder="Titel eingeben" value="{{ titel }}">
+		<div class="input-group form-group">
+			<div class="input-group-prepend">
+				<label class="input-group-text" for="titel">Titel</label></div>
+			<input type="text" class="form-control" id="titel" value="{{ titel }}">
 		</div>
-		<div class="form-group row">
-			<label class="col" class="col" for="namensbestandteil">Namensbestandteil</label class="col">
-			<input type="text" class="form-control col" id="namensbestandteil" placeholder="Namensbestandteil eingeben" value="{{ namensbestandteil }}">
+		<div class="input-group form-group">
+			<div class="input-group-prepend">
+				<label class="input-group-text" for="namensbestandteil">Namensbestandteil</label></div>
+			<input type="text" class="form-control" id="namensbestandteil" value="{{ namensbestandteil }}">
 		</div>
-		<div class="form-group row">
-			<label class="col" class="col" for="nachname">Nachname</label class="col">
-			<input type="text" class="form-control col" id="nachname" placeholder="Nachname eingeben" value="{{ nachname }}" required>
+		<div class="input-group form-group">
+			<div class="input-group-prepend">
+				<label class="input-group-text" for="nachname">Nachname</label></div>
+			<input type="text" class="form-control" id="nachname" value="{{ nachname }}" required>
 		</div>
-		<div class="form-group row">
-			<label class="col" class="col" for="vorname">Vorname</label class="col">
-			<input type="text" class="form-control col" id="vorname" placeholder="Vorname eingeben" value="{{ vorname }}" required>
+		<div class="input-group form-group">
+			<div class="input-group-prepend">
+				<label class="input-group-text" for="vorname">Vorname</label></div>
+			<input type="text" class="form-control" id="vorname" value="{{ vorname }}" required>
 		</div>
-		<div class="form-group row">
-			<label class="col" class="col" for="geburtsdatum">Geburtsdatum</label class="col">
-			<input type="date" class="form-control col" id="geburtsdatum" value="{{ geburtsdatum }}" required>
+		<div class="input-group form-group">
+			<div class="input-group-prepend">
+				<label class="input-group-text" for="geburtsdatum">Geburtsdatum</label></div>
+			<input type="date" class="form-control" id="geburtsdatum" value="{{ geburtsdatum }}" required>
 		</div>
-		<div class="form-group row">
-			<label class="col" class="col" for="geburtsname">Geburtsname</label class="col">
-			<input type="text" class="form-control col" id="geburtsname" placeholder="Geburtsname eingeben" value="{{ geburtsname }}">
+		<div class="input-group form-group">
+			<div class="input-group-prepend">
+				<label class="input-group-text" for="geburtsname">Geburtsname</label></div>
+			<input type="text" class="form-control" id="geburtsname" value="{{ geburtsname }}">
 		</div>
-		<div class="form-group row">
-			<label class="col" class="col" for="studiumAbschlussdatum">Studiumsabschlussdatum laut Abschlusszeugnis</label class="col">
-			<input type="date" class="form-control col" id="studiumAbschlussdatum" value="{{ studiumAbschlussdatum }}" required>
+		<div class="input-group form-group">
+			<div class="input-group-prepend">
+				<label class="input-group-text" for="studiumAbschlussdatum">Studiumsabschlussdatum laut Abschlusszeugnis</label></div>
+			<input type="date" class="form-control" id="studiumAbschlussdatum" value="{{ studiumAbschlussdatum }}" required>
 		</div>
-		<div class="form-group row">
-			<label class="col" class="col" for="bemerkung">Bemerkung</label class="col">
-			<input type="text" class="form-control col" id="bemerkung" placeholder="Bemerkung eingeben" value="{{ bemerkung }}">
+		<div class="input-group form-group">
+			<div class="input-group-prepend">
+				<label class="input-group-text" for="bemerkung">Bemerkung</label></div>
+			<input type="text" class="form-control" id="bemerkung" value="{{ bemerkung }}">
 		</div>
-		<div class="form-group row">
-			<input type="checkbox" class="form-check-input" id="bafoeg-check" required>
-			<label class="col" class="col" class="form-check-label class=" col "" for="bafoeg-check">Ich möchte Bafög beantragen.</label
-				 class="col">
+		<div class="form-group alert alert-warning" role="alert">
+			<input type="checkbox" class="form-check-input ml-0" id="bafoeg-check" required>
+			<label class="form-check-label ml-4" for="bafoeg-check">Ich möchte Bafög beantragen.</label>
 		</div>
 
-		<button type="button" class="btn btn-info btn-open-datatransfer-modal">Daten von Nutzerkonto übernehmen</button>
-		<button type="submit" class="btn btn-primary">Antrag stellen</button>
+		<button type="button " class="btn btn-info btn-open-datatransfer-modal ">Daten von Nutzerkonto übernehmen</button>
+		<button type="submit " class="btn btn-primary ">Antrag stellen</button>
 	</form>
 {{/with}}

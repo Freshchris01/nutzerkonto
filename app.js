@@ -15,6 +15,8 @@ const config = require('./config');
 
 const app = express();
 
+app.use('/css', express.static(__dirname + '/css'));
+
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
