@@ -1,0 +1,90 @@
+<h2>{{ title }}</h2>
+
+<div class="modal fade" id="datatransfer-modal" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Zustimmung zur Datenübertragung geben</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<p>Der Dienst <span class="badge badge-secondary">{{ title }}</span> möchte auf folgende Daten Ihres Nutzerkontos zugreifen:
+				</p>
+				<ul>
+					{{#each dataKeys}}
+						<li>{{ this }}</li>
+					{{/each}}
+				</ul>
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-light" data-dismiss="modal">Nö, kein Bock 😡</button>
+				<a class="btn btn-primary" role="button" href="/nutzerkonto-login?redirect={{{ redirect }}}">Joa klar 😎</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	$(function () {
+		$('.btn-open-datatransfer-modal').click(function () {
+			$('#datatransfer-modal').modal('show');
+		});
+	});
+</script>
+{{#with data}}
+	<form action="/TODO" method="POST">
+		{{!-- <label class="col" class="col" for="anrede">Anrede</label class="col">
+	<select class="form-control col" id="anrede">
+		<option>Herr</option>
+		<option>Frau</option>
+		<option>Dritte Option</option>
+	</select> --}}
+		<div class="form-group row">
+			<label class="col" class="col" for="anrede">Anrede</label class="col">
+			<input type="text" class="form-control col" id="anrede" placeholder="Anrede eingeben" value="{{ anrede }}" required>
+		</div>
+		<div class="form-group row">
+			<label class="col" class="col" for="titel">Titel</label class="col">
+			<input type="text" class="form-control col" id="titel" placeholder="Titel eingeben" value="{{ titel }}">
+		</div>
+		<div class="form-group row">
+			<label class="col" class="col" for="namensbestandteil">Namensbestandteil</label class="col">
+			<input type="text" class="form-control col" id="namensbestandteil" placeholder="Namensbestandteil eingeben" value="{{ namensbestandteil }}">
+		</div>
+		<div class="form-group row">
+			<label class="col" class="col" for="nachname">Nachname</label class="col">
+			<input type="text" class="form-control col" id="nachname" placeholder="Nachname eingeben" value="{{ nachname }}" required>
+		</div>
+		<div class="form-group row">
+			<label class="col" class="col" for="vorname">Vorname</label class="col">
+			<input type="text" class="form-control col" id="vorname" placeholder="Vorname eingeben" value="{{ vorname }}" required>
+		</div>
+		<div class="form-group row">
+			<label class="col" class="col" for="geburtsdatum">Geburtsdatum</label class="col">
+			<input type="date" class="form-control col" id="geburtsdatum" value="{{ geburtsdatum }}" required>
+		</div>
+		<div class="form-group row">
+			<label class="col" class="col" for="geburtsname">Geburtsname</label class="col">
+			<input type="text" class="form-control col" id="geburtsname" placeholder="Geburtsname eingeben" value="{{ geburtsname }}">
+		</div>
+		<div class="form-group row">
+			<label class="col" class="col" for="studiumAbschlussdatum">Studiumsabschlussdatum laut Abschlusszeugnis</label class="col">
+			<input type="date" class="form-control col" id="studiumAbschlussdatum" value="{{ studiumAbschlussdatum }}" required>
+		</div>
+		<div class="form-group row">
+			<label class="col" class="col" for="bemerkung">Bemerkung</label class="col">
+			<input type="text" class="form-control col" id="bemerkung" placeholder="Bemerkung eingeben" value="{{ bemerkung }}">
+		</div>
+		<div class="form-group row">
+			<input type="checkbox" class="form-check-input" id="bafoeg-check" required>
+			<label class="col" class="col" class="form-check-label class=" col "" for="bafoeg-check">Ich möchte Bafög beantragen.</label
+				 class="col">
+		</div>
+
+		<button type="button" class="btn btn-info btn-open-datatransfer-modal">Daten von Nutzerkonto übernehmen</button>
+		<button type="submit" class="btn btn-primary">Antrag stellen</button>
+	</form>
+{{/with}}

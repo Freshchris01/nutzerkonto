@@ -39,15 +39,17 @@ app.get('/', (req, res) => {
 // service providers
 
 const serviceProviders = [{
-	name: 'Service Provider 3',
+	name: 'Bafög leistungsabhängiger Teilerlass',
 	path: 'service-provider-3',
-	dataAttributes: ['name'],
-	keyCloakClientID: 'serviceProvider3'
+	dataKeys: ['anrede', 'titel', 'namensbestandteil', 'nachname', 'vorname', 'geburtsdatum', 'geburtsname', 'studiumAbschlussdatum', 'bemerkung'],
+	keyCloakClientID: 'serviceProvider3',
+	template: 'serviceProviderBafoegLeistungsabhaengigerTeilerlass.hbs'
 }, {
 	name: 'Service Provider 2',
 	path: 'service-provider-2',
-	dataAttributes: ['name', 'birthdate'],
-	keyCloakClientID: 'serviceProvider2'
+	dataKeys: ['name', 'birthdate'],
+	keyCloakClientID: 'serviceProvider2',
+	template: 'serviceProviderBafoegLeistungsabhaengigerTeilerlass.hbs'
 }];
 
 const memoryStore = new session.MemoryStore();
@@ -76,11 +78,19 @@ app.get('/nutzerkonto-login', keycloak.protect(), (req, res) => {
 });
 
 app.get('/nutzerkonto-datenuebertragen', keycloak.protect(), (req, res) => {
-	const dataAttributes = req.query.dataAttributes.split(',');
+	const dataKeys = req.query.dataKeys.split(',');
 	// TODO: talk to database, which is not accessible from "outside"
 
 	res.json({
-		name: 'chris'
+		anrede: 'Herr',
+		titel: 'Doktor',
+		namensbestandteil: 'van',
+		nachname: 'Berg',
+		vorname: 'Christiansen',
+		geburtsdatum: '1980-07-25',
+		geburtsname: 'Tal',
+		studiumAbschlussdatum: '2009-04-01',
+		bemerkung: 'Lorem ipsum'
 	});
 });
 
@@ -95,21 +105,27 @@ app.get(`/${serviceProviders[0].path}`, (req, res) => {
 				Cookie: buildCookieString(req.cookies)
 			},
 			params: {
-				dataAttributes: serviceProviders[0].dataAttributes.join(',')
+				dataKeys: serviceProviders[0].dataKeys.join(',')
 			}
 		}).then(response => {
-			res.render('serviceProvider', {
-				redirect: '',
-				name: response.data.name
-			});
+			const templateData = {
+				title: serviceProviders[0].name,
+				dataKeys: Object.keys(response.data),
+				data: response.data,
+				redirect: serviceProviders[0].path,
+			};
+			res.render(serviceProviders[0].template, templateData);
 		}).catch(error => {
 			console.log(error);
-		})
-	} else {
-		res.render('serviceProvider', {
-			redirect: serviceProviders[0].path,
-			name: ''
 		});
+	} else {
+		const templateData = {
+			title: serviceProviders[0].name,
+			dataKeys: serviceProviders[0].dataKeys,
+			data: 'not empty',
+			redirect: serviceProviders[0].path,
+		};
+		res.render(serviceProviders[0].template, templateData);
 	}
 });
 
