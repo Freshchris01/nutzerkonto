@@ -1,0 +1,36 @@
+<h2 class="mb-5">{{ title }}</h2>
+
+<div class="modal fade" id="datatransfer-modal" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Zustimmung zur Datenübertragung geben</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<p>Der Dienst <span class="badge badge-secondary">{{ title }}</span> möchte auf folgende Daten Ihres Nutzerkontos zugreifen:
+				</p>
+				<ul>
+					{{#each dataKeys}}
+						<li>{{ this }}</li>
+					{{/each}}
+				</ul>
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-light" data-dismiss="modal">Nö, kein Bock 😡</button>
+				<a class="btn btn-primary" role="button" href="/nutzerkonto-login?redirect={{{ redirect }}}">Joa klar 😎</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	$(function () {
+		$('.btn-open-datatransfer-modal').click(function () {
+			$('#datatransfer-modal').modal('show');
+		});
+	});
+</script>

@@ -45,13 +45,7 @@ const serviceProviders = [{
 	path: 'service-provider-3',
 	dataKeys: ['anrede', 'titel', 'namensbestandteil', 'nachname', 'vorname', 'geburtsdatum', 'geburtsname', 'studiumAbschlussdatum', 'bemerkung'],
 	keyCloakClientID: 'serviceProvider3',
-	template: 'serviceProviderBafoegLeistungsabhaengigerTeilerlass.hbs'
-}, {
-	name: 'Service Provider 2',
-	path: 'service-provider-2',
-	dataKeys: ['name', 'birthdate'],
-	keyCloakClientID: 'serviceProvider2',
-	template: 'serviceProviderBafoegLeistungsabhaengigerTeilerlass.hbs'
+	template: 'anbieterBafoegLeistungsabhaengigerTeilerlass'
 }];
 
 const memoryStore = new session.MemoryStore();
@@ -124,7 +118,6 @@ app.get(`/${serviceProviders[0].path}`, (req, res) => {
 		const templateData = {
 			title: serviceProviders[0].name,
 			dataKeys: serviceProviders[0].dataKeys,
-			data: 'not empty',
 			redirect: serviceProviders[0].path,
 		};
 		res.render(serviceProviders[0].template, templateData);
