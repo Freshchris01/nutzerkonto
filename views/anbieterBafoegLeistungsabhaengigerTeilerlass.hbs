@@ -1,49 +1,52 @@
-{{> anbieter }}
+<h2 class="mb-5">{{ title }}</h2>
 
 <form action="/TODO" method="POST">
-	<div class="input-group form-group">
-		<div class="input-group-prepend">
-			<label class="input-group-text" for="anrede">Anrede</label></div>
+
+	<button type="button" class="btn btn-info btn-open-datatransfer-modal mb-4">Daten von Nutzerkonto übernehmen</button>
+
+	<div class="form-group">
+
+		<label for="anrede">Anrede</label>
 		<input type="text" class="form-control" id="anrede" value="{{ data.anrede }}" required>
 	</div>
-	<div class="input-group form-group">
-		<div class="input-group-prepend">
-			<label class="input-group-text" for="titel">Titel</label></div>
+	<div class="form-group">
+
+		<label for="titel">Titel</label>
 		<input type="text" class="form-control" id="titel" value="{{ data.titel }}">
 	</div>
-	<div class="input-group form-group">
-		<div class="input-group-prepend">
-			<label class="input-group-text" for="namensbestandteil">Namensbestandteil</label></div>
+	<div class="form-group">
+
+		<label for="namensbestandteil">Namensbestandteil</label>
 		<input type="text" class="form-control" id="namensbestandteil" value="{{ data.namensbestandteil }}">
 	</div>
-	<div class="input-group form-group">
-		<div class="input-group-prepend">
-			<label class="input-group-text" for="nachname">Nachname</label></div>
+	<div class="form-group">
+
+		<label for="nachname">Nachname</label>
 		<input type="text" class="form-control" id="nachname" value="{{ data.nachname }}" required>
 	</div>
-	<div class="input-group form-group">
-		<div class="input-group-prepend">
-			<label class="input-group-text" for="vorname">Vorname</label></div>
+	<div class="form-group">
+
+		<label for="vorname">Vorname</label>
 		<input type="text" class="form-control" id="vorname" value="{{ data.vorname }}" required>
 	</div>
-	<div class="input-group form-group">
-		<div class="input-group-prepend">
-			<label class="input-group-text" for="geburtsdatum">Geburtsdatum</label></div>
+	<div class="form-group">
+
+		<label for="geburtsdatum">Geburtsdatum</label>
 		<input type="date" class="form-control" id="geburtsdatum" value="{{ data.geburtsdatum }}" required>
 	</div>
-	<div class="input-group form-group">
-		<div class="input-group-prepend">
-			<label class="input-group-text" for="geburtsname">Geburtsname</label></div>
+	<div class="form-group">
+
+		<label for="geburtsname">Geburtsname</label>
 		<input type="text" class="form-control" id="geburtsname" value="{{ data.geburtsname }}">
 	</div>
-	<div class="input-group form-group">
-		<div class="input-group-prepend">
-			<label class="input-group-text" for="studiumAbschlussdatum">Studiumsabschlussdatum laut Abschlusszeugnis</label></div>
+	<div class="form-group">
+
+		<label for="studiumAbschlussdatum">Studiumsabschlussdatum laut Abschlusszeugnis</label>
 		<input type="date" class="form-control" id="studiumAbschlussdatum" value="{{ data.studiumAbschlussdatum }}" required>
 	</div>
-	<div class="input-group form-group">
-		<div class="input-group-prepend">
-			<label class="input-group-text" for="bemerkung">Bemerkung</label></div>
+	<div class="form-group">
+
+		<label for="bemerkung">Bemerkung</label>
 		<input type="text" class="form-control" id="bemerkung" value="{{ data.bemerkung }}">
 	</div>
 	<div class="form-group alert alert-warning" role="alert">
@@ -51,6 +54,7 @@
 		<label class="form-check-label ml-4" for="bafoeg-check">Ich möchte Bafög beantragen.</label>
 	</div>
 
-	<button type="button" class="btn btn-info btn-open-datatransfer-modal ">Daten von Nutzerkonto übernehmen</button>
-	<button type="submit" class="btn btn-primary ">Antrag stellen</button>
+	<button type="submit" class="btn btn-info ">Antrag stellen</button>
 </form>
+
+{{> anbieter }}
