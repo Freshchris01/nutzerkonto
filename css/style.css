@@ -15,6 +15,10 @@ label {
 	border-color: var(--t4g-nk-color);
 }
 
+.jumbotron {
+	text-align: center;
+}
+
 /* custom checkboxes */
 
 .checkbox-container {
