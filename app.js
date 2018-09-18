@@ -70,38 +70,40 @@ app.use(keycloak.middleware());
 
 app.get('/nutzerkonto-login', keycloak.protect(), (req, res) => {
 	const redirect = req.query.redirect;
-	res.redirect(`/${redirect}?flag=true`);
+	const wantedKeys = Object.keys(req.query).filter(key => req.query[key] == 'on');
+	res.redirect(`/${redirect}?wantedKeys=${JSON.stringify(wantedKeys)}`);
 });
 
 app.get('/nutzerkonto-datenuebertragen', keycloak.protect(), (req, res) => {
-	const dataKeys = req.query.dataKeys.split(',');
+	const dataKeys = JSON.parse(req.query.dataKeys);
 	// TODO: talk to database, which is not accessible from "outside"
 
 	res.json({
-		anrede: 'Herr',
-		titel: 'Doktor',
-		namensbestandteil: 'van',
-		nachname: 'Berg',
-		vorname: 'Christiansen',
-		geburtsdatum: '1980-07-25',
-		geburtsname: 'Tal',
-		studiumAbschlussdatum: '2009-04-01',
-		bemerkung: 'Lorem ipsum'
+		anrede: dataKeys.includes('anrede') ? 'Herr' : '',
+		titel: dataKeys.includes('titel') ? 'Doktor' : '',
+		namensbestandteil: dataKeys.includes('namensbestandteil') ? 'van' : '',
+		nachname: dataKeys.includes('nachname') ? 'Berg' : '',
+		vorname: dataKeys.includes('vorname') ? 'Christiansen' : '',
+		geburtsdatum: dataKeys.includes('geburtsdatum') ? '1980-07-25' : '',
+		geburtsname: dataKeys.includes('geburtsname') ? 'Tal' : '',
+		studiumAbschlussdatum: dataKeys.includes('studiumAbschlussdatum') ? '2009-04-01' : '',
+		bemerkung: dataKeys.includes('bemerkung') ? 'Lorem ipsum' : ''
 	});
 });
 
 app.use(keycloak.middleware({ logout: '/' }));
 
 app.get(`/${serviceProviders[0].path}`, (req, res) => {
-	const flag = req.query.flag;
-
-	if (flag) {
+	if (req.query.wantedKeys) {
+		const availableKeys = serviceProviders[0].dataKeys;
+		const wantedKeys = JSON.parse(req.query.wantedKeys);
+		const dataKeys = getIntersection(availableKeys, wantedKeys);
 		axios.get(`${process.env.HOST}/nutzerkonto-datenuebertragen`, {
 			headers: {
 				Cookie: buildCookieString(req.cookies)
 			},
 			params: {
-				dataKeys: serviceProviders[0].dataKeys.join(',')
+				dataKeys: JSON.stringify(dataKeys)
 			}
 		}).then(response => {
 			const templateData = {
@@ -130,6 +132,11 @@ function buildCookieString(cookies) {
 		cookieString += `${cookieKey}=${cookies[cookieKey]};`;
 	}
 	return cookieString;
+}
+
+function getIntersection(array1, array2) {
+	// https://stackoverflow.com/questions/1885557/simplest-code-for-array-intersection-in-javascript
+	return array1.filter(value => -1 !== array2.indexOf(value));
 }
 
 // catch 404 and forward to error handler

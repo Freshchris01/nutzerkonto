@@ -17,10 +17,6 @@ label {
 
 /* custom checkboxes */
 
-.checklist {
-	position: relative;
-}
-
 .checkbox-container {
     display: block;
     position: relative;

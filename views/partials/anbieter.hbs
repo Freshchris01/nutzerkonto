@@ -7,23 +7,25 @@
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
-			<div class="modal-body">
-				<p>Der Dienst <em>{{ title }}</em> möchte auf folgende Daten Ihres Nutzerkontos
-					zugreifen. Hier können Sie einzelne Attribute deselektieren.
-				</p>
-				<div class="checklist">
+
+			<form action="/nutzerkonto-login" method="GET">
+				<div class="modal-body">
+					<p>Der Dienst <em>{{ title }}</em> möchte auf folgende Daten Ihres Nutzerkontos
+						zugreifen. Hier können Sie einzelne Attribute deselektieren.
+					</p>
+					<input type="text" name="redirect" value="{{{ redirect }}}" style="display:none;">
 					{{#each dataKeys}}
 						<label class="checkbox-container">{{ this }}
-							<input type="checkbox" checked="checked">
+							<input type="checkbox" checked="checked" name="{{ this }}">
 							<span class="checkmark"></span>
 						</label>
 					{{/each}}
 				</div>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-light" data-dismiss="modal">Nö, kein Bock 😡</button>
-				<a class="btn btn-info" role="button" href="/nutzerkonto-login?redirect={{{ redirect }}}">Joa klar 😎</a>
-			</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-light" data-dismiss="modal">Nö, kein Bock 😡</button>
+					<button type="submit" class="btn btn-info ">Joa klar 😎</button>
+				</div>
+			</form>
 		</div>
 	</div>
 </div>
@@ -34,7 +36,5 @@
 		$('.btn-open-datatransfer-modal').click(function () {
 			$('#datatransfer-modal').modal('show');
 		});
-		// initalize tooltips
-		// $('[data-toggle="tooltip"]').tooltip()
 	});
 </script>
