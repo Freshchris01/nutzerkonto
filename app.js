@@ -38,6 +38,10 @@ app.get('/', (req, res) => {
 	res.render('index');
 });
 
+app.get('/success', (req, res) => {
+	res.render('success');
+});
+
 // service providers
 
 const serviceProviders = [{
