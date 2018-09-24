@@ -62,7 +62,7 @@ app.use(session({
 }));
 
 const keycloak = new Keycloak({ store: memoryStore }, {
-	"realm": "nutzerkonto2",
+	"realm": "nutzerkonto3",
 	"auth-server-url": config.KEYCLOAK,
 	"ssl-required": "external",
 	"resource": serviceProviders[0].keyCloakClientID,
