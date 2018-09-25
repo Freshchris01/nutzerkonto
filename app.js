@@ -73,7 +73,7 @@ app.use(keycloak.middleware());
 app.get('/nutzerkonto-login', keycloak.protect(), (req, res) => {
 	const redirect = req.query.redirect;
 	const wantedKeys = Object.keys(req.query).filter(key => req.query[key] == 'on');
-	res.redirect(`${redirect}?wantedKeys=${JSON.stringify(wantedKeys)}`);
+	res.redirect(`${redirect}/?wantedKeys=${JSON.stringify(wantedKeys)}`);
 });
 
 app.get('/nutzerkonto-datenuebertragen', keycloak.protect(), (req, res) => {
