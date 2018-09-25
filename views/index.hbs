@@ -5,8 +5,8 @@
 	<p>präsentiert von Tech4Germany</p>
 
 	<div class="btn-group-vertical mt-5" role="group" aria-label="Services">
-		<a class="btn btn-secondary btn-lg" role="button" href="/service-provider-3">Bafög leistungsabhängiger Teilerlass</a>
-		<a class="btn btn-secondary btn-lg" role="button" href="/service-provider-2">Waffenschein</a>
-		<a class="btn btn-secondary btn-lg" role="button" href="/service-provider-1">Baumfällen</a>
+		{{#each serviceProviders}}
+			<a class="btn btn-secondary btn-lg" role="button" href="{{ this.path }}">{{ this.name }}</a>
+		{{/each}}
 	</div>
 </div>

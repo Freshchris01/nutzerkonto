@@ -24,6 +24,17 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
+const serviceProviders = [{
+	name: 'Bafög leistungsabhängiger Teilerlass',
+	path: process.env.HOST_NUTZERKONTO_SP,
+	dataKeys: ['anrede', 'titel', 'namensbestandteil', 'nachname', 'vorname', 'geburtsdatum', 'geburtsname', 'studiumAbschlussdatum', 'bemerkung'],
+	keyCloakClientID: 'serviceProvider3',
+}, {
+	name: 'Baumfällen'
+}, {
+	name: 'Waffenschein'
+}];
+
 // Handlebars view engine
 
 app.engine('hbs', expressHbs({
@@ -33,24 +44,11 @@ app.engine('hbs', expressHbs({
 }));
 app.set('view engine', 'hbs');
 
-
 app.get('/', (req, res) => {
-	res.render('index');
+	res.render('index', {
+		serviceProviders: serviceProviders
+	});
 });
-
-app.get('/success', (req, res) => {
-	res.render('success');
-});
-
-// service providers
-
-const serviceProviders = [{
-	name: 'Bafög leistungsabhängiger Teilerlass',
-	path: 'service-provider-3',
-	dataKeys: ['anrede', 'titel', 'namensbestandteil', 'nachname', 'vorname', 'geburtsdatum', 'geburtsname', 'studiumAbschlussdatum', 'bemerkung'],
-	keyCloakClientID: 'serviceProvider3',
-	template: 'anbieterBafoegLeistungsabhaengigerTeilerlass'
-}];
 
 const memoryStore = new session.MemoryStore();
 
@@ -75,7 +73,7 @@ app.use(keycloak.middleware());
 app.get('/nutzerkonto-login', keycloak.protect(), (req, res) => {
 	const redirect = req.query.redirect;
 	const wantedKeys = Object.keys(req.query).filter(key => req.query[key] == 'on');
-	res.redirect(`/${redirect}?wantedKeys=${JSON.stringify(wantedKeys)}`);
+	res.redirect(`${redirect}?wantedKeys=${JSON.stringify(wantedKeys)}`);
 });
 
 app.get('/nutzerkonto-datenuebertragen', keycloak.protect(), (req, res) => {
@@ -96,52 +94,6 @@ app.get('/nutzerkonto-datenuebertragen', keycloak.protect(), (req, res) => {
 });
 
 app.use(keycloak.middleware({ logout: '/' }));
-
-app.get(`/${serviceProviders[0].path}`, (req, res) => {
-	if (req.query.wantedKeys) {
-		const availableKeys = serviceProviders[0].dataKeys;
-		const wantedKeys = JSON.parse(req.query.wantedKeys);
-		const dataKeys = getIntersection(availableKeys, wantedKeys);
-		axios.get(`${process.env.HOST}/nutzerkonto-datenuebertragen`, {
-			headers: {
-				Cookie: buildCookieString(req.cookies)
-			},
-			params: {
-				dataKeys: JSON.stringify(dataKeys)
-			}
-		}).then(response => {
-			const templateData = {
-				title: serviceProviders[0].name,
-				dataKeys: Object.keys(response.data),
-				data: response.data,
-				redirect: serviceProviders[0].path,
-			};
-			res.render(serviceProviders[0].template, templateData);
-		}).catch(error => {
-			console.log(error);
-		});
-	} else {
-		const templateData = {
-			title: serviceProviders[0].name,
-			dataKeys: serviceProviders[0].dataKeys,
-			redirect: serviceProviders[0].path,
-		};
-		res.render(serviceProviders[0].template, templateData);
-	}
-});
-
-function buildCookieString(cookies) {
-	let cookieString = '';
-	for (let cookieKey in cookies) {
-		cookieString += `${cookieKey}=${cookies[cookieKey]};`;
-	}
-	return cookieString;
-}
-
-function getIntersection(array1, array2) {
-	// https://stackoverflow.com/questions/1885557/simplest-code-for-array-intersection-in-javascript
-	return array1.filter(value => -1 !== array2.indexOf(value));
-}
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
