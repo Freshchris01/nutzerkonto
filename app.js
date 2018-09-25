@@ -93,7 +93,7 @@ app.get('/nutzerkonto-datenuebertragen', keycloak.protect(), (req, res) => {
 	});
 });
 
-app.use(keycloak.middleware({ logout: '/' }));
+app.use(keycloak.middleware({ logout: process.env.HOST_NUTZERKONTO }));
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
