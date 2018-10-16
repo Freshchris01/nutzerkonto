@@ -42,6 +42,7 @@ Für weitere Details bezüglich Modularität oder Sicherheit kontakieren Sie ger
 | HOST_NUTZERKONTO_SP | URL für den exemplarischen Anbieter | http://localhost:3001 |
 
 - die `.config`-Datei im Root-Verzeichnis dahingehend ändern, dass die `KEYCLOAK`-Variable auf die eigene Installation von Keycloak zeigt (Installation findet im folgenden Schritt statt)
+- Ändern der `keyCloakClientID` in Zeile 31 der Datei `app.js`, sodass sie mit der ID, die in "3. Setup Keycloak als IAM-Komponente" vermerkt wird, übereinstimmt.
 - `npm start`
 
 ### 2. Setup [Nutzerkonto Anbieter](https://github.com/tech4germany/nutzerkonto-anbieter)
